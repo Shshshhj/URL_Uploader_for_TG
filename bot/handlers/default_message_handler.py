@@ -1,9 +1,8 @@
-import pyrogram
-from pyrogram import Client, Message, filters
+from pyrogram import Client, Message, Filters
 from bot import COMMAND
 from bot.handlers import leech_handler
 
-@Client.on_message(Filters.private & pyrogram.filters.command(["leech"]))
+@Client.on_message(Filters.private & Filters.command(COMMAND.LEECH))
 async def func(client, update):
   cmd, file_name = update.text.split(" ", 1)
   message = update.reply_to_message
