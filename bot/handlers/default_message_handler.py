@@ -1,4 +1,5 @@
-from pyrogram import Client, Message, Filters
+import pyrogram
+from pyrogram import Client, Message, filters
 from bot import COMMAND
 from bot.handlers import leech_handler
 
