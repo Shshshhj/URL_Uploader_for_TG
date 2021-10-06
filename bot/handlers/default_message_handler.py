@@ -38,8 +38,15 @@ async def func(client : Client, message: Message):
     )
     aria2_api = STATUS.ARIA2_API
     await aria2_api.start()
-
+    
     link = " ".join(args[1:])
+    if " " in message.text:
+        url_parts = message.text.split(" ")
+        if len(url_parts) == 3:
+            file_name = url_parts[2]
+            link = url_parts[1]
+
+    
     LOGGER.debug(f'Leeching : {link}')
 
     try:
