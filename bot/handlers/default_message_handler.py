@@ -21,14 +21,14 @@ from bot.handlers import cancel_leech_handler
 
 @Client.on_message(Filters.private & Filters.command(COMMAND.LEECH))
 async def func(client : Client, message: Message):
-    args = message.text.split(" ")
-    if len(args) <= 1:        
-        try:
-            await message.delete()
-        except:
-            pass
-        return
-        
+    
+    murl = message.reply_to_message
+    #args = message.text.split(" ")
+    if " | " in murl.text:
+        link , cfilename = murl.text.split(" | ", 1)
+    else:
+        link = murl.text
+    
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
     download_dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
     STATUS.ARIA2_API = STATUS.ARIA2_API or aria2.aria2(
@@ -39,7 +39,7 @@ async def func(client : Client, message: Message):
     aria2_api = STATUS.ARIA2_API
     await aria2_api.start()
     
-    link = " ".join(args[1:])
+    #link = " ".join(args[1:])
     url_parts = message.text.split(" ")
     if len(url_parts) == 3:
         file_name = url_parts[2]
