@@ -15,7 +15,14 @@ from pyrogram import Client, Message
 from bot import LOCAL, CONFIG, STATUS
 from bot.plugins import formater, split, thumbnail_video, ffprobe
 
+global cfname
+cfname = "none"
+
 async def func(filepath: str, client: Client,  message: Message, delete=False):
+    murl = message.reply_to_message
+    if " | " in murl.text:
+        link , cfname = murl.text.split(" | ", 1)
+        
     if not os_path.exists(filepath):
         LOGGER.error(f'File not found : {filepath}')
         await message.edit_text(
@@ -68,9 +75,14 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
             use_default_thumbnail = os_path.exists(thumbnail)
             if not use_default_thumbnail:
                 thumbnail = await thumbnail_video.func(file.path)
+            if cfname != "none":
+                fname = cfname
+            else:
+                fname = file.name
             await client.send_video(
                 chat_id,
-                file, 
+                file,
+                file_name=fname,
                 supports_streaming=True,
                 thumb=str(thumbnail),
                 height=height,
